@@ -48,6 +48,15 @@ var _ = Describe("Source", func() {
 		Expect(json).To(MatchJSON(`{"repository":"foo","insecure":false,"tag":"0"}`))
 	})
 
+	It("should marshal an insecure setting on the Source back out to a boolean", func() {
+		source := resource.Source{Repository: "foo", Insecure: true}
+
+		json, err := json.Marshal(source)
+		Expect(err).ToNot(HaveOccurred())
+
+		Expect(json).To(MatchJSON(`{"repository":"foo","insecure":true}`))
+	})
+
 	Describe("ecr", func() {
 		It("should exclude a registry id as part of the request for an authorization token when omitted", func() {
 			source := resource.Source{
