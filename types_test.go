@@ -57,7 +57,7 @@ var _ = Describe("Source", func() {
 		Expect(json).To(MatchJSON(`{"repository":"foo","insecure":false,"tag":"0"}`))
 	})
 
-	It("should marshal an insecure setting on the Source back out to a boolean", func() {
+	It("should marshal an insecure setting back out to a boolean", func() {
 		source := resource.Source{Repository: "foo", Insecure: true}
 
 		json, err := json.Marshal(source)
