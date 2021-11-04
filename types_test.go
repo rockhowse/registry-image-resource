@@ -39,6 +39,15 @@ var _ = Describe("Source", func() {
 		Expect(source.Tag.String()).To(Equal("foo"))
 	})
 
+	It("should unmarshal insecure boolean value into a boolean", func() {
+		var source resource.Source
+		raw := []byte(`{ "insecure": true}`)
+
+		err := json.Unmarshal(raw, &source)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(source.Insecure).To(Equal(true))
+	})
+
 	It("should marshal a tag back out to a string", func() {
 		source := resource.Source{Repository: "foo", Tag: "0"}
 
