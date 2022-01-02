@@ -39,6 +39,15 @@ var _ = Describe("Source", func() {
 		Expect(source.Tag.String()).To(Equal("foo"))
 	})
 
+	It("should unmarshal insecure boolean value into a boolean", func() {
+		var source resource.Source
+		raw := []byte(`{ "insecure": true}`)
+
+		err := json.Unmarshal(raw, &source)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(source.Insecure).To(Equal(true))
+	})
+
 	It("should marshal a tag back out to a string", func() {
 		source := resource.Source{Repository: "foo", Tag: "0"}
 
@@ -46,6 +55,15 @@ var _ = Describe("Source", func() {
 		Expect(err).ToNot(HaveOccurred())
 
 		Expect(json).To(MatchJSON(`{"repository":"foo","insecure":false,"tag":"0"}`))
+	})
+
+	It("should marshal an insecure setting back out to a boolean", func() {
+		source := resource.Source{Repository: "foo", Insecure: true}
+
+		json, err := json.Marshal(source)
+		Expect(err).ToNot(HaveOccurred())
+
+		Expect(json).To(MatchJSON(`{"repository":"foo","insecure":true}`))
 	})
 
 	Describe("ecr", func() {
